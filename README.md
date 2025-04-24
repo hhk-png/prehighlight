@@ -1,4 +1,5 @@
-<div style="text-align:center; font-size:20px;"><a src="./README-zh.md">中文文档 点击跳转</a></div>
+<h3 align="center"><a href="./README-zh.md">中文文档 点击跳转</a></h3>
+
 When reading in English, **highlighting** the first few letters of each word can help non-native speakers stay focused, improving both comprehension and reading speed.
 
 `prehighlight` processes either an HTML string or a DOM node to bold the first few letters of each English word.
