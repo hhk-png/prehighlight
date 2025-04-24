@@ -1,18 +1,30 @@
+import type { HighlightOptions, HighlightPrefixLength, HTMLNode } from './types'
 import {
   createDocumentFragment,
   createElement,
   createTextNode,
   getElementsByTagName,
+  isPreposition,
   normalize,
-  prepositions,
   skippedTags,
 } from './utils'
 
-function isPreposition(word: string): boolean {
-  return prepositions.has(word.toLowerCase())
+function highlightPrefixLength(word: string): number {
+  if (isPreposition(word)) {
+    return 1
+  }
+  else if (word.length <= 2) {
+    return 1
+  }
+  else if (word.length <= 5) {
+    return 2
+  }
+  else {
+    return Math.ceil(word.length / 2)
+  }
 }
 
-function highlightSentence(textNode: Text): Node[] {
+function highlightSentence(textNode: Text, calculatePrefixLength: HighlightPrefixLength): Node[] {
   // textContent of textNode must not be null
   const content = textNode.textContent!
   // spaces only
@@ -25,22 +37,7 @@ function highlightSentence(textNode: Text): Node[] {
   for (const word of words) {
     // english word
     if (/^[a-z]+$/i.test(word)) {
-      let boldLength = 0
-      if (isPreposition(word)) {
-        boldLength = 1
-      }
-      else if (word.length <= 2) {
-        boldLength = 1
-      }
-      else if (word.length <= 5) {
-        boldLength = 2
-      }
-      // else {
-      //   boldLength = Math.min(4, word.length)
-      // }
-      else {
-        boldLength = Math.ceil(word.length / 2)
-      }
+      const boldLength = calculatePrefixLength(word)
 
       const boldPart = createElement.call(textNode.ownerDocument, 'b')
       boldPart.textContent = word.slice(0, boldLength)
@@ -57,18 +54,12 @@ function highlightSentence(textNode: Text): Node[] {
   return nodesList
 }
 
-export interface HighlightOptions {
-  inplace?: boolean
-  returnDom?: boolean
-  returnDomFragment?: boolean
-  returnWholeBody?: boolean
-}
-
-type HTMLNode = string | Node
 export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNode {
   if (typeof html === 'string' && cfg.inplace) {
     throw new Error('inplace option only works with Node type')
   }
+
+  const calculatePrefixLength = cfg.highlightPrefixLength || highlightPrefixLength
 
   const domParser = new DOMParser()
   // body is <body> tag
@@ -119,10 +110,11 @@ export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNo
   // }))
 
   textNodes.forEach((textNode) => {
-    const highlightedNodes = highlightSentence(textNode as Text)
+    const highlightedNodes = highlightSentence(textNode as Text, calculatePrefixLength)
     textNode.replaceWith(...highlightedNodes)
   })
 
+  // normalize html
   normalize.call(html)
   body && normalize.call(body)
 

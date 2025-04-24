@@ -59,6 +59,10 @@ export const prepositions = new Set([
   'some',
 ])
 
+export function isPreposition(word: string): boolean {
+  return prepositions.has(word.toLowerCase())
+}
+
 export const skippedTags = new Set([
   'PRE',
   'CODE',

@@ -35,6 +35,12 @@ describe('prehighlight config', () => {
     const cfg = { returnWholeBody: true }
     expect(prehighlight(html, cfg)).toBe('<body><div><b>he</b>llo <b>wo</b>rld</div></body>')
   })
+
+  it('highlightPrefixLength', () => {
+    const html = '<div>hello world</div>'
+    const cfg = { highlightPrefixLength: (_: string) => 1 }
+    expect(prehighlight(html, cfg)).toBe('<div><b>h</b>ello <b>w</b>orld</div>')
+  })
 })
 
 describe('highlight dom', () => {
