@@ -1,3 +1,3 @@
 export * from './highlight'
-export * from './types'
+export type * from './types'
 export { isSpecificWord } from './utils'
