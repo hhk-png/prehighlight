@@ -4,13 +4,16 @@
   "version": "0.0.1",
   "packageManager": "pnpm@10.9.0",
   "description": "Highlight the first few letters of the word",
-  "author": "",
+  "author": "hhk-png <fangluoabc@163.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/hhk-png/prehighlight"
   },
-  "keywords": [],
+  "bugs": "https://github.com/hhk-png/prehighlight/issues",
+  "keywords": [
+    "highlight word"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -19,10 +22,16 @@
     "./package.json": "./package.json"
   },
   "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest",
     "coverage": "vitest --coverage",
     "build": "unbuild",
+    "release": "bumpp",
+    "publish:ci": "pnpm publish --access public --no-git-checks",
     "prepare": "simple-git-hooks",
     "tsc": "tsc --noEmit",
     "lint": "eslint . --fix --cache"
@@ -34,6 +43,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^4.12.0",
     "@vitest/coverage-v8": "^3.1.2",
+    "bumpp": "^10.1.0",
     "eslint": "^9.4.0",
     "lint-staged": "^15.2.5",
     "simple-git-hooks": "^2.11.1",
