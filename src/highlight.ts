@@ -1,66 +1,25 @@
 import {
   createDocumentFragment,
   createElement,
-  createNodeIterator,
   createTextNode,
   getElementsByTagName,
   normalize,
+  prepositions,
+  skippedTags,
 } from './utils'
-
-const prepositions = new Set([
-  'the',
-  'and',
-  'in',
-  'on',
-  'at',
-  'by',
-  'with',
-  'about',
-  'against',
-  'between',
-  'into',
-  'through',
-  'during',
-  'before',
-  'after',
-  'above',
-  'below',
-  'to',
-  'from',
-  'up',
-  'down',
-  'over',
-  'under',
-  'again',
-  'further',
-  'then',
-  'once',
-  'here',
-  'there',
-  'when',
-  'where',
-  'why',
-  'how',
-  'all',
-  'any',
-  'both',
-  'each',
-  'few',
-  'more',
-  'most',
-  'other',
-  'some',
-])
 
 function isPreposition(word: string): boolean {
   return prepositions.has(word.toLowerCase())
 }
 
 function highlightSentence(textNode: Text): Node[] {
-  const content = textNode.textContent || ''
+  // textContent of textNode must not be null
+  const content = textNode.textContent!
+  // spaces only
   if (/^\s+$/.test(content)) {
-    return []
+    return [createTextNode.call(textNode.ownerDocument, content)]
   }
+
   const nodesList: Node[] = []
   const words = content.split(/(\s+|[.,!?;()])/).filter(Boolean)
   for (const word of words) {
@@ -76,8 +35,11 @@ function highlightSentence(textNode: Text): Node[] {
       else if (word.length <= 5) {
         boldLength = 2
       }
+      // else {
+      //   boldLength = Math.min(4, word.length)
+      // }
       else {
-        boldLength = Math.min(4, word.length)
+        boldLength = Math.ceil(word.length / 2)
       }
 
       const boldPart = createElement.call(textNode.ownerDocument, 'b')
@@ -136,15 +98,25 @@ export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNo
       }
     }
   }
-  const textNodeIterator = createNodeIterator.call(body.ownerDocument, body, NodeFilter.SHOW_TEXT, null)
+
   const textNodes: Text[] = []
-  while (true) {
-    const currentTextNode = textNodeIterator!.nextNode() as Text
-    if (!currentTextNode) {
-      break
+  function traverseDOM(node: Node): void {
+    if (node.nodeType === Node.TEXT_NODE) {
+      textNodes.push(node as Text)
     }
-    textNodes.push(currentTextNode)
+    else if (node.nodeType === Node.ELEMENT_NODE) {
+      if (!skippedTags.has((node as Element).tagName)) {
+        node.childNodes.forEach(traverseDOM)
+      }
+    }
   }
+  traverseDOM(cfg.inplace ? (html as Node) : body)
+
+  // for concurrent highlight
+  // Promise.all(textNodes.map(async (textNode) => {
+  //   const nodesList = highlightSentence(textNode)
+  //   textNode.replaceWith(...nodesList)
+  // }))
 
   textNodes.forEach((textNode) => {
     const highlightedNodes = highlightSentence(textNode as Text)
