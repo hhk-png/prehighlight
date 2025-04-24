@@ -4,13 +4,13 @@ import {
   createElement,
   createTextNode,
   getElementsByTagName,
-  isPreposition,
+  isSpecificWord,
   normalize,
   skippedTags,
 } from './utils'
 
 function highlightPrefixLength(word: string): number {
-  if (isPreposition(word)) {
+  if (isSpecificWord(word)) {
     return 1
   }
   else if (word.length <= 2) {
@@ -54,17 +54,17 @@ function highlightSentence(textNode: Text, calculatePrefixLength: HighlightPrefi
   return nodesList
 }
 
-export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNode {
-  if (typeof html === 'string' && cfg.inplace) {
+export function prehighlight(html: HTMLNode, options: HighlightOptions = {}): HTMLNode {
+  if (typeof html === 'string' && options.inplace) {
     throw new Error('inplace option only works with Node type')
   }
 
-  const calculatePrefixLength = cfg.highlightPrefixLength || highlightPrefixLength
+  const calculatePrefixLength = options.highlightPrefixLength || highlightPrefixLength
 
   const domParser = new DOMParser()
   // body is <body> tag
   let body!: Node
-  if (!cfg.inplace) {
+  if (!options.inplace) {
     if (typeof html === 'string') {
       const doc = domParser.parseFromString(html, 'text/html')
       body = getElementsByTagName.call(doc, 'body')[0]
@@ -101,7 +101,7 @@ export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNo
       }
     }
   }
-  traverseDOM(cfg.inplace ? (html as Node) : body)
+  traverseDOM(options.inplace ? (html as Node) : body)
 
   // for concurrent highlight
   // Promise.all(textNodes.map(async (textNode) => {
@@ -118,12 +118,12 @@ export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNo
   normalize.call(html)
   body && normalize.call(body)
 
-  if (cfg.inplace) {
+  if (options.inplace) {
     return html
   }
 
-  if (cfg.returnDom) {
-    if (cfg.returnDomFragment) {
+  if (options.returnDom) {
+    if (options.returnDomFragment) {
       const returnedNode = createDocumentFragment.call(body.ownerDocument)
 
       while (body.firstChild) {
@@ -136,7 +136,7 @@ export function prehighlight(html: HTMLNode, cfg: HighlightOptions = {}): HTMLNo
     return body
   }
 
-  return cfg.returnWholeBody
+  return options.returnWholeBody
     ? (body as HTMLElement).outerHTML
     : (body as HTMLElement).innerHTML
 }

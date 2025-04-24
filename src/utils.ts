@@ -14,7 +14,7 @@ export {
   normalize,
 }
 
-export const prepositions = new Set([
+export const specificWords = new Set([
   'the',
   'and',
   'in',
@@ -59,8 +59,8 @@ export const prepositions = new Set([
   'some',
 ])
 
-export function isPreposition(word: string): boolean {
-  return prepositions.has(word.toLowerCase())
+export function isSpecificWord(word: string): boolean {
+  return specificWords.has(word.toLowerCase())
 }
 
 export const skippedTags = new Set([

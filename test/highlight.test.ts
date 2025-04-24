@@ -2,44 +2,44 @@ import { describe, expect, it } from 'vitest'
 import { prehighlight } from '../src/index'
 
 describe('prehighlight config', () => {
-  it('cfg.inplace do not work with string', () => {
+  it('options.inplace do not work with string', () => {
     const html = '<div>hello world</div>'
-    const cfg = { inplace: true }
-    expect(() => prehighlight(html, cfg)).toThrowError('inplace option only works with Node type')
+    const options = { inplace: true }
+    expect(() => prehighlight(html, options)).toThrowError('inplace option only works with Node type')
   })
 
-  it('cfg.inplace works with dom', () => {
+  it('options.inplace works with dom', () => {
     const html = new DOMParser().parseFromString('<div>hello world</div>', 'text/html')
-    const cfg = { inplace: true }
-    const res = prehighlight(html.body.firstChild!, cfg)
+    const options = { inplace: true }
+    const res = prehighlight(html.body.firstChild!, options)
     expect(res).toBeInstanceOf(Node)
     expect((res as Element).innerHTML).toBe('<b>he</b>llo <b>wo</b>rld')
   })
 
-  it('cfg.returnDom', () => {
+  it('options.returnDom', () => {
     const html = '<div>hello world</div>'
-    const cfg = { returnDom: true }
-    expect(prehighlight(html, cfg)).toBeInstanceOf(Node)
+    const options = { returnDom: true }
+    expect(prehighlight(html, options)).toBeInstanceOf(Node)
   })
 
-  it('cfg.returnDom with cfg.returnDomFragment', () => {
+  it('options.returnDom with options.returnDomFragment', () => {
     const html = '<div>hello world</div>'
-    const cfg = { returnDom: true, returnDomFragment: true }
-    const res = prehighlight(html, cfg) as Element
+    const options = { returnDom: true, returnDomFragment: true }
+    const res = prehighlight(html, options) as Element
     expect(res).toBeInstanceOf(DocumentFragment)
     expect(res.childNodes[0].childNodes.length).toBe(4)
   })
 
-  it('cfg.returnWholeDocument', () => {
+  it('options.returnWholeDocument', () => {
     const html = '<div>hello world</div>'
-    const cfg = { returnWholeBody: true }
-    expect(prehighlight(html, cfg)).toBe('<body><div><b>he</b>llo <b>wo</b>rld</div></body>')
+    const options = { returnWholeBody: true }
+    expect(prehighlight(html, options)).toBe('<body><div><b>he</b>llo <b>wo</b>rld</div></body>')
   })
 
   it('highlightPrefixLength', () => {
     const html = '<div>hello world</div>'
-    const cfg = { highlightPrefixLength: (_: string) => 1 }
-    expect(prehighlight(html, cfg)).toBe('<div><b>h</b>ello <b>w</b>orld</div>')
+    const options = { highlightPrefixLength: (_: string) => 1 }
+    expect(prehighlight(html, options)).toBe('<div><b>h</b>ello <b>w</b>orld</div>')
   })
 })
 
