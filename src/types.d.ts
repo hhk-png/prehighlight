@@ -1,5 +1,4 @@
-type IsPreposition = (string) => boolean
-type HighlightPrefixLength = (word: string) => number
+export type HighlightPrefixLength = (word: string) => number
 
 export interface HighlightOptions {
   inplace?: boolean
