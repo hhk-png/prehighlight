@@ -144,9 +144,97 @@ describe('hightlight complex html', () => {
   <script>
     console.log('This is a script tag.')
   </script>
-  
+
   `
     const res = prehighlight(html)
     expect(res).toMatchSnapshot()
+  })
+})
+
+describe('highlight shadow dom', () => {
+  it('opened shadow dom', () => {
+    class MyCard extends HTMLElement {
+      constructor() {
+        super()
+
+        const shadowRoot = this.attachShadow({ mode: 'open' })
+
+        shadowRoot.innerHTML = `
+        <style>
+          .card {
+            border: 2px solid #ccc;
+            padding: 10px;
+          }
+          ::slotted(span) {
+            color: blue;
+          }
+        </style>
+        <div class="card">
+          <h2><slot name="title"></slot></h2> <!-- slot -->
+          <slot></slot> <!-- default slot -->
+        </div>
+      `
+      }
+    }
+
+    customElements.define('my-card', MyCard)
+
+    const myCardElement = document.createElement('my-card')
+    document.body.appendChild(myCardElement)
+
+    const title = document.createElement('span')
+    title.setAttribute('slot', 'title')
+    title.textContent = 'My Custom Card Title'
+    myCardElement.appendChild(title)
+
+    const content = document.createElement('p')
+    content.textContent = 'This is some card content.'
+    myCardElement.appendChild(content)
+
+    const res = prehighlight(myCardElement)
+    expect(res).toMatchSnapshot('opened shadow dom')
+  })
+
+  it('closed shadow dom', () => {
+    class MyCard extends HTMLElement {
+      constructor() {
+        super()
+
+        const shadowRoot = this.attachShadow({ mode: 'closed' })
+
+        shadowRoot.innerHTML = `
+        <style>
+          .card {
+            border: 2px solid #ccc;
+            padding: 10px;
+          }
+          ::slotted(span) {
+            color: blue;
+          }
+        </style>
+        <div class="card">
+          <h2><slot name="title"></slot></h2> <!-- slot -->
+          <slot></slot> <!-- default slot -->
+        </div>
+      `
+      }
+    }
+
+    customElements.define('my-card-closed', MyCard)
+
+    const myCardElement = document.createElement('my-card-closed')
+    document.body.appendChild(myCardElement)
+
+    const title = document.createElement('span')
+    title.setAttribute('slot', 'title')
+    title.textContent = 'My Custom Card Title'
+    myCardElement.appendChild(title)
+
+    const content = document.createElement('p')
+    content.textContent = 'This is some card content.'
+    myCardElement.appendChild(content)
+
+    const res = prehighlight(myCardElement)
+    expect(res).toMatchSnapshot('closed shadow dom')
   })
 })

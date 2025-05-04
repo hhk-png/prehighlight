@@ -73,4 +73,8 @@ export const skippedTags = new Set([
   'META',
   'LINK',
   'NOSCRIPT',
+  'TEMPLATE',
+  'SVG',
+  'CANVAS',
+  'SLOT',
 ])
