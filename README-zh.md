@@ -1,6 +1,8 @@
-阅读英文时，如果将英文单词的前几个字母加粗，起到高亮的效果，那么对于不是太熟悉英文的人来说，能够帮助其提高注意力，以提升阅读英文的速度。
+阅读英文时，如果将英文单词的前几个字母加粗，起到高亮的效果，那么对于不太熟悉英文的人来说，能够帮助其提高注意力，以提升阅读英文的速度。
 
 `prehighlight` 能够对 html 字符串或者 dom 进行处理，高亮每个单词的前几个字母。
+
+![case](./images/case.png)
 
 ## Install
 
@@ -60,25 +62,25 @@ res:
 
 #### HighlightOptions
 
-##### inplace?: boolean
+##### --inplace?: boolean
 
 在原有的 dom 结点上高亮英文字母，此配置只能在 `html` 参数为 dom 的时候才会起作用，如果 html 参数为 string，inplace 设置为了 true，将会报错。设置了 `inplace: true`，prehighlight 的返回值类型也是 Node。
 
-##### returnDom?: boolean
+##### --returnDom?: boolean
 
 如果为 true，则 prehighlight 的返回值为 dom 结点，默认为 body 标签下面的 innerHTML。如果为 false，则返回值的类型为 string。
 
-##### returnDomFragment?: boolean
+##### --returnDomFragment?: boolean
 
 该配置只有在 returnDom 为 true 的情况下才会生效，单个 `returnDomFragment:true` 不会生效，即 `{returnDom: true, returnDomFragment: true}`。
 
 如果为 true，则返回的 dom 结点是一个 Fragment node。
 
-##### returnWholeBody?: boolean
+##### --returnWholeBody?: boolean
 
 如果输入为 `<body><div>hello<div></body>`，默认情况下，返回值为 `<div><b>he<b>llo<div>`，不包括`<body>` 标签。将 `returnWholeBody` 设置为 true 之后，返回值则包括 `<body>` 标签，即 `<body><div><b>he<b>llo<div></body>`。
 
-##### highlightPrefixLength?: (word: string) => number
+##### --highlightPrefixLength?: (word: string) => number
 
 该函数用于决定高亮一个单词的前多少个字母，默认情况下，该函数为：
 

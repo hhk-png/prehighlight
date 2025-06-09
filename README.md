@@ -1,8 +1,9 @@
 <h3 align="center"><a href="./README-zh.md">中文文档 点击跳转</a></h3>
-
 When reading in English, **highlighting** the first few letters of each word can help non-native speakers stay focused, improving both comprehension and reading speed.
 
 `prehighlight` processes either an HTML string or a DOM node to bold the first few letters of each English word.
+
+![case](./images/case.png)
 
 ## Install
 
@@ -62,23 +63,23 @@ res:
 
 #### HighlightOptions
 
-##### inplace?: boolean
+##### --inplace?: boolean
 
 If `true`, modifies the provided DOM node in-place. Only works when the `html` parameter is a DOM node. Using this with an HTML string will throw an error. When enabled, the return type is a `Node`.
 
-##### returnDom?: boolean
+##### --returnDom?: boolean
 
 If `true`, returns a DOM node. Defaults to returning the `innerHTML` under the `<body>` tag as a string. Set to `true` to get the node itself.
 
-##### returnDomFragment?: boolean
+##### --returnDomFragment?: boolean
 
 Only effective if `returnDom` is `true`. This flag alone won’t work—must be used together: `{ returnDom: true, returnDomFragment: true }`. When enabled, returns a document fragment instead of a full DOM node.
 
-##### returnWholeBody?: boolean
+##### --returnWholeBody?: boolean
 
 By default, if the input is `<body><div>hello</div></body>`, the returned value will be `<div><b>he</b>llo</div>`, excluding the `<body>` tag. Setting this to true will include the `<body>` tag in the output, i.e. `<body><div><b>he</b>llo</div></body>`.
 
-##### highlightPrefixLength?: (word: string) => number
+##### --highlightPrefixLength?: (word: string) => number
 
 A function to determine how many letters of a word should be highlighted. The default implementation is:
 
