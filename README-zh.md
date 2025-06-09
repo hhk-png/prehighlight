@@ -82,7 +82,7 @@ res:
 
 ##### --highlightPrefixLength?: (word: string) => number
 
-该函数用于决定高亮一个单词的前多少个字母，默认情况下，该函数为：
+该函数用于决定高亮一个单词的前多少个字母，默认情况下，该函数如下。针对某些特殊的单词，比如 **don't, mother-in-law, and/or** 等，会以非字母符号作为分割点输入 `highlightPrefixLength` 当中，**don't** 会拆分为**don** 和 **t**。
 
 ```typescript
 function highlightPrefixLength(word: string): number {
@@ -106,7 +106,7 @@ function highlightPrefixLength(word: string): number {
 判断单词是否是特定的英文单词，如果是，则只会对该单词的第一个字母加粗。单词列表如下
 
 ```typescript
-[
+;[
   'the',
   'and',
   'in',

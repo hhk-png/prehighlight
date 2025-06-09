@@ -81,7 +81,7 @@ By default, if the input is `<body><div>hello</div></body>`, the returned value 
 
 ##### --highlightPrefixLength?: (word: string) => number
 
-A function to determine how many letters of a word should be highlighted. The default implementation is:
+A function to determine how many letters of a word should be highlighted. The default implementation as follows. For certain special words, such as **don't, mother-in-law**, and **and/or,** non-letter symbols are used as splitting points when passed into `highlightPrefixLength`. For example, **don't** will be split into don and t.
 
 ```typescript
 function highlightPrefixLength(word: string): number {
