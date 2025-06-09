@@ -33,7 +33,7 @@ function highlightSentence(textNode: Text, calculatePrefixLength: HighlightPrefi
   }
 
   const nodesList: Node[] = []
-  const words = content.split(/(\s+|[.,!?;()])/).filter(Boolean)
+  const words = content.split(/(\s+|[.,!?;()'/&-])/).filter(Boolean)
   for (const word of words) {
     // english word
     if (/^[a-z]+$/i.test(word)) {

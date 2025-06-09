@@ -72,6 +72,15 @@ describe('hightlight complex html', () => {
     expect(res).toMatchSnapshot()
   })
 
+  it('all english words', () => {
+    const html = `<p>don't, John's</p>
+<p>mother-in-law, part-time</p>
+<p>U.S.A., Dr., e.g.</p>
+<p>and/or, input/output</p>
+<p>R&D, AT&T, &amp;</p>`
+    expect(prehighlight(html)).toMatchSnapshot()
+  })
+
   it('highlight chinese', () => {
     const html = `<div>你好，世界！</div>`
     const res = prehighlight(html)

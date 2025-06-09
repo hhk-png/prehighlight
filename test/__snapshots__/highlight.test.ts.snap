@@ -4,6 +4,14 @@ exports[`highlight shadow dom > closed shadow dom > closed shadow dom 1`] = `"<m
 
 exports[`highlight shadow dom > opened shadow dom > opened shadow dom 1`] = `"<my-card><span slot="title"><b>M</b>y <b>Cus</b>tom <b>Ca</b>rd <b>Ti</b>tle</span><p><b>Th</b>is <b>i</b>s <b>s</b>ome <b>ca</b>rd <b>cont</b>ent.</p></my-card>"`;
 
+exports[`hightlight complex html > all english words 1`] = `
+"<p><b>do</b>n'<b>t</b>, <b>Jo</b>hn'<b>s</b></p>
+<p><b>mot</b>her-<b>i</b>n-<b>la</b>w, <b>pa</b>rt-<b>ti</b>me</p>
+<p><b>U</b>.<b>S</b>.<b>A</b>., <b>D</b>r., <b>e</b>.<b>g</b>.</p>
+<p><b>a</b>nd/<b>o</b>r, <b>in</b>put/<b>out</b>put</p>
+<p><b>R</b>&amp;<b>D</b>, <b>A</b>T&amp;<b>T</b>, &amp;</p>"
+`;
+
 exports[`hightlight complex html > complex html 1`] = `
 "<header>
     <h1><b>Bio</b>nic <b>Read</b>ing 演示</h1>
@@ -59,7 +67,7 @@ exports[`hightlight complex html > complex html 1`] = `
   </article>
 
   <footer>
-    <p>&amp;copy; 2025 示例网站 - <b>Bio</b>nic <b>Read</b>ing 测试</p>
+    <p>&amp;<b>co</b>py; 2025 示例网站 - <b>Bio</b>nic <b>Read</b>ing 测试</p>
   </footer>
   <script>
     console.log('This is a script tag.')
