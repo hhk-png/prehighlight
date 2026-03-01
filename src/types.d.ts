@@ -6,6 +6,7 @@ export interface HighlightOptions {
   returnDomFragment?: boolean
   returnWholeBody?: boolean
   highlightPrefixLength?: HighlightPrefixLength
+  addEMSpaceAfterPeriod?: boolean
 }
 
 type HTMLNode = string | Node

@@ -41,6 +41,12 @@ describe('prehighlight config', () => {
     const options = { highlightPrefixLength: (_: string) => 1 }
     expect(prehighlight(html, options)).toBe('<div><b>h</b>ello <b>w</b>orld</div>')
   })
+
+  it('addEMSpaceAfterPeriod', () => {
+    const html = '<div>Hello. World.</div>'
+    const options = { addEMSpaceAfterPeriod: true }
+    expect(prehighlight(html, options)).toBe('<div><b>He</b>llo.\u2003 <b>Wo</b>rld.\u2003</div>')
+  })
 })
 
 describe('highlight dom', () => {

@@ -24,7 +24,11 @@ function highlightPrefixLength(word: string): number {
   }
 }
 
-function highlightSentence(textNode: Text, calculatePrefixLength: HighlightPrefixLength): Node[] {
+function highlightSentence(
+  textNode: Text,
+  calculatePrefixLength: HighlightPrefixLength,
+  addEMSpaceAfterPeriod = false,
+): Node[] {
   // textContent of textNode must not be null
   const content = textNode.textContent!
   // spaces only
@@ -39,15 +43,25 @@ function highlightSentence(textNode: Text, calculatePrefixLength: HighlightPrefi
     if (/^[a-z]+$/i.test(word)) {
       const boldLength = calculatePrefixLength(word)
 
-      const boldPart = createElement.call(textNode.ownerDocument, 'b')
-      boldPart.textContent = word.slice(0, boldLength)
-      const restPart = createTextNode.call(textNode.ownerDocument, word.slice(boldLength))
-      nodesList.push(boldPart, restPart)
+      const nodes = []
+      if (boldLength > 0) {
+        const boldPart = createElement.call(textNode.ownerDocument, 'b')
+        boldPart.textContent = word.slice(0, boldLength)
+        nodes.push(boldPart)
+      }
+      nodes.push(createTextNode.call(textNode.ownerDocument, word.slice(boldLength)))
+      nodesList.push(...nodes)
     }
     else {
       // punctuation and chinese, etc.
       const punctuation = createTextNode.call(textNode.ownerDocument, word)
-      nodesList.push(punctuation)
+      if (word.trim() === '.' && addEMSpaceAfterPeriod) {
+        nodesList.push(punctuation)
+        nodesList.push(createTextNode.call(textNode.ownerDocument, '\u2003'))
+      }
+      else {
+        nodesList.push(punctuation)
+      }
     }
   }
 
@@ -110,7 +124,11 @@ export function prehighlight(html: HTMLNode, options: HighlightOptions = {}): HT
   // }))
 
   textNodes.forEach((textNode) => {
-    const highlightedNodes = highlightSentence(textNode as Text, calculatePrefixLength)
+    const highlightedNodes = highlightSentence(
+      textNode as Text,
+      calculatePrefixLength,
+      options.addEMSpaceAfterPeriod,
+    )
     textNode.replaceWith(...highlightedNodes)
   })
 

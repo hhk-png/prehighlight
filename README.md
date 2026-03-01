@@ -83,6 +83,10 @@ By default, if the input is `<body><div>hello</div></body>`, the returned value 
 
 A function to determine how many letters of a word should be highlighted. The default implementation as follows. For certain special words, such as **don't, mother-in-law**, and **and/or,** non-letter symbols are used as splitting points when passed into `highlightPrefixLength`. For example, **don't** will be split into don and t.
 
+##### --addEMSpaceAfterPeriod?: boolean
+
+When enabled, adds an EM space (`\u2003`) after a period (`.`) in the highlighted output. This can help improve readability by visually separating sentences.
+
 ```typescript
 function highlightPrefixLength(word: string): number {
   if (isSpecificWord(word)) {
