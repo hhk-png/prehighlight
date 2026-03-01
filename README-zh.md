@@ -101,6 +101,10 @@ function highlightPrefixLength(word: string): number {
 }
 ```
 
+##### --addEMSpaceAfterPeriod?: boolean
+
+当该选项启用时，在高亮输出中的句点（`.`）后添加一个 EM 空格（`\u2003`）。这可以通过在视觉上分隔句子来提高可读性。
+
 ### isSpecificWord
 
 判断单词是否是特定的英文单词，如果是，则只会对该单词的第一个字母加粗。单词列表如下
